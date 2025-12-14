@@ -54,13 +54,13 @@ int compile(FILE *pFile) {
             case '[':
                 PROGRAM[program_counter].operator = OP_JMP_FWD;
                 if (FULL_STACK) return FAILURE;
-                stack[stack_pointer++] = program_counter;
+                stack[stack_pointer++] = program_counter; // push position of '[' onto the stack
                 break;
             case ']':
                 if (stack_pointer == 0) return FAILURE;
                 jmp_program_counter = stack[--stack_pointer]; // pop off the stack
                 PROGRAM[program_counter].operator = OP_JMP_REV;
-                PROGRAM[program_counter].operand = jmp_program_counter;
+                PROGRAM[program_counter].operand = jmp_program_counter; // jump back to '['
                 PROGRAM[jmp_program_counter].operand = program_counter;
                 break;
             default: program_counter--; break;
@@ -101,12 +101,14 @@ int main(int argc, const char * argv[]) {
     cursor = 0;
     stack_pointer = 0;
 
+    // open file
     FILE *pFile = fopen(argv[1], "r");
     if (pFile == NULL) {
         fprintf(stderr, "Can't open file.\n");
         return FAILURE;
     }
 
+    // if compilation goes fine return SUCCESS (0) if not return FAILURE (1)
     Status status = compile(pFile);
     fclose(pFile);
 
