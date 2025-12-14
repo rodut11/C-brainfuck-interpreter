@@ -9,3 +9,6 @@ This project is licensed under GPL-3.0
 ```bash
 ./bf <file name>
 ```
+
+If interested in reading about it, I made a blog post:
+https://rodut11.dev/posts/c-brainfuck-interpreter/
